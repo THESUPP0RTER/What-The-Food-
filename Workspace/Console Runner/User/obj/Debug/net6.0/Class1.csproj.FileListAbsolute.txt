@@ -1,0 +1,14 @@
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\bin\Debug\net6.0\Class1.deps.json
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\bin\Debug\net6.0\Class1.runtimeconfig.json
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\bin\Debug\net6.0\Class1.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\bin\Debug\net6.0\ref\Class1.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\bin\Debug\net6.0\Class1.pdb
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.csproj.AssemblyReference.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.AssemblyInfoInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.AssemblyInfo.cs
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.csproj.CoreCompileInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\ref\Class1.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.pdb
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\User\obj\Debug\net6.0\Class1.genruntimeconfig.cache
