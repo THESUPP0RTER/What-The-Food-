@@ -10,11 +10,13 @@ using Class1;
 //letsGo.ConfigureServices(services);
 using (var context = new Context())
 {
-    var cust = new Customer()
+    var acc = new Account()
     {
-        Name = "Msaasdasdasdastt"
+        Email = "Fake@gmail.com",
+        Fname = "fake name",
+        Lname = "super fake last name"
     };
-    context.customers.Add(cust);
+    context.accounts.Add(acc);
     context.SaveChanges();
     
 

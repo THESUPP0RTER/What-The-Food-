@@ -18,34 +18,25 @@ namespace Console_Runner.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("User.Customer", b =>
+            modelBuilder.Entity("User.Account", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Fname")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("customers");
-                });
-
-            modelBuilder.Entity("User.FoodItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("name")
+                    b.Property<string>("Lname")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<int>("accessLevel")
+                        .HasColumnType("int");
 
-                    b.ToTable("foodItems");
+                    b.HasKey("Email");
+
+                    b.ToTable("accounts");
                 });
 #pragma warning restore 612, 618
         }

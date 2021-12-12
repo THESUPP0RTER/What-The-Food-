@@ -23,8 +23,7 @@ namespace Class1
             optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef", 
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
-        public DbSet<Customer> customers { get; set; }
-        public DbSet<FoodItem> foodItems { get; set; }
+        public DbSet<Account> accounts{ get; set; }
     }
 
 }
