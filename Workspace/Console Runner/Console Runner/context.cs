@@ -14,12 +14,13 @@ namespace Class1
     {
         public void ConfigureServices(IServiceCollection services)
         => services.AddDbContext<Context>();
+        
     }
     public class Context : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server = localhost; user = root; password = *RootPass*; Database = ef", 
+            optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef", 
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
         public DbSet<Customer> customers { get; set; }
