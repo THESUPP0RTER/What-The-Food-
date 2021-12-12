@@ -28,8 +28,6 @@ C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console 
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
-C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Class1.dll
-C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Class1.pdb
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\MySqlConnector.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.Design.dll

@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "Console Runner/1.0.0": {
         "dependencies": {
-          "Class1": "1.0.0",
           "Microsoft.EntityFrameworkCore.Design": "6.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
@@ -914,15 +913,6 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
-      },
-      "Class1/1.0.0": {
-        "dependencies": {
-          "Pomelo.EntityFrameworkCore.MySql": "6.0.0",
-          "Pomelo.EntityFrameworkCore.MySql.Design": "1.1.2"
-        },
-        "runtime": {
-          "Class1.dll": {}
-        }
       }
     }
   },
@@ -1603,11 +1593,6 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
-    },
-    "Class1/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }
