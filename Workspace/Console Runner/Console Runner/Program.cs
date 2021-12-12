@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.Extensions.DependencyInjection;
 using User;
 
 Console.WriteLine("Hello, World!");
@@ -8,5 +9,6 @@ Customer test = new Customer();
 test.name = "Matt";
 test.email = "testttt";
 Startup letsGo = new Startup();
+IServiceCollection x = new iserviceCollection();
 letsGo.ConfigureServices();
 letsGo.save
