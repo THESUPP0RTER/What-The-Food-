@@ -8,7 +8,7 @@ namespace Class1
 {
     public class FoodItem
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string name { get; set; }
     }
 }

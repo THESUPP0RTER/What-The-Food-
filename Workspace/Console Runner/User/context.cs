@@ -11,8 +11,13 @@ namespace Class1
     public class Context: DbContext
 
     {
-        public Context(DbContextOptions<Context> options) : base(options) { }
+        public Context(DbContextOptions<Context> options)
+            : base(options) {
+            var contextOptions = new DbContextOptionsBuilder<Context>();
+            Console.WriteLine("in context");
+        }
         public DbSet<Customer> customers { get; set; }
         public DbSet<FoodItem> foodItems { get; set; }
+
     }
 }

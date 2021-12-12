@@ -32,3 +32,6 @@ C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console 
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Class1.pdb
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\MySqlConnector.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.Design.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.Design.dll

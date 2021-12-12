@@ -6,24 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Class1;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Class1
 {
-    public class CustomerDesignFactory : IDesignTimeDbContextFactory<Context>
+
+
+    public class Startup
     {
-        public Context CreateDbContext(string[] args)
+        public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("Customer_DesignTime_ConnectionString ");
-            var MySqlServerVersion = Environment.GetEnvironmentVariable("Customer_MYSQL_Version");
+            // Replace with your connection string.
+            var connectionString = "server=localhost;user=root;password=myPassword;Database=Cust";
+
             
-            var optionsBuilder = new DbContextOptionsBuilder<Context>();
-            optionsBuilder.UseMySql(
-                connectionString,
-                new MySqlServerVersion(MySqlServerVersion),
-                options => options.MigrationsAssembly("Customers.migrations")
-                );
-            var Context = new Context(optionsBuilder.Options);
-            return Context;
+            var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
+            services.AddDbContext<Context>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(connectionString, serverVersion)
+            );
+            Console.WriteLine(serverVersion);
+        }
+        public void saveCustomer(User.Customer cust)
+        {
+
         }
     }
 }
