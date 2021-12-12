@@ -8,4 +8,3 @@ test.name = "Matt";
 Startup letsGo = new Startup();
 IServiceCollection services = new ServiceCollection();
 letsGo.ConfigureServices(services);
-letsGo.saveCustomer(test);

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211212023636_CreateCust")]
+    [Migration("20211212184937_CreateCust")]
     partial class CreateCust
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

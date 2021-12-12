@@ -10,10 +10,10 @@ namespace Class1
 {
     public class Context : DbContext
     {
-        
+        //public Context(DbContextOptions<Context> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server = localhost; user = root; password = myPassword; Database=ef");
+            optionsBuilder.UseSqlServer("server=localhost;user=root;password=myPassword;Database=ef");
         }
         
 
