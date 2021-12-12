@@ -8,16 +8,17 @@ using User;
 
 namespace Class1
 {
-    public class Context: DbContext
-
+    public class Context : DbContext
     {
-        public Context(DbContextOptions<Context> options)
-            : base(options) {
-            var contextOptions = new DbContextOptionsBuilder<Context>();
-            Console.WriteLine("in context");
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("server = localhost; user = root; password = myPassword; Database=ef");
         }
+        
+
         public DbSet<Customer> customers { get; set; }
         public DbSet<FoodItem> foodItems { get; set; }
-
     }
+
 }

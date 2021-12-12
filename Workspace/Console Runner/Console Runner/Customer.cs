@@ -6,7 +6,8 @@ namespace User
 {
     public class Customer
     {
-        public string email { get; set; }
+
+        public int Id { get; set; }
         public string name { get; set; }
       
 

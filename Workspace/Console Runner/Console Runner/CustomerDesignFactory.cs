@@ -17,7 +17,7 @@ namespace Class1
         public void ConfigureServices(IServiceCollection services)
         {
             // Replace with your connection string.
-            var connectionString = "server=localhost;user=root;password=myPassword;Database=Cust";
+            var connectionString = "server=localhost;user=root;password=myPassword;Database=ef";
 
             
             var serverVersion = new MariaDbServerVersion(ServerVersion.AutoDetect(connectionString));
