@@ -25,5 +25,4 @@ namespace Class1
         }
         public DbSet<Account> accounts{ get; set; }
     }
-
 }

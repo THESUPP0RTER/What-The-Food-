@@ -26,12 +26,7 @@ namespace Console_Runner
                     };
                     context.accounts.Add(acc);
                     context.SaveChanges();
-
-
                 }
-
-
-
                 return true;
             }catch(Exception ex)
             {
@@ -39,6 +34,32 @@ namespace Console_Runner
             }
             
         }
+
+        public bool userSignUp(string email, string first, string last)
+        {
+            try
+            {
+
+                using (var context = new Context())
+                {
+                    var acc = new Account()
+                    {
+                        Email = email,
+                        Fname = first,
+                        Lname = last
+                    };
+                    context.accounts.Add(acc);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
         public bool userDelete()
         {
             try
@@ -50,13 +71,71 @@ namespace Console_Runner
                     Account acc = context.accounts.Find(targetPK);
                     context.Remove(acc);
                     context.SaveChanges();
-
-
                 }
-
                 return true;
             }
             catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool userDelete(string email)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    string targetPK = email;
+                    Account acc = context.accounts.Find(targetPK);
+                    context.Remove(acc);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public Account readData(string targetPK)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    return acc;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool updateData(string targetPK, string nEmail, string nFname, string nLname)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
+                        Console.WriteLine("NULL ACCOUNT FOUND");
+                    if (nEmail != null)
+                        acc.Email = nEmail;
+                    if (nFname != null)
+                        acc.Fname = nFname;
+                    if (nLname != null) 
+                        acc.Lname = nLname;
+                    context.accounts.Update(acc);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
             {
                 return false;
             }
