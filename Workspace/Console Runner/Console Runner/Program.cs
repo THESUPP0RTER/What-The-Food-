@@ -2,13 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
+using Console_Runner;
 
 //Customer test = new Customer();
 //test.name = "Matt";
 //Startup letsGo = new Startup();
 //IServiceCollection services = new ServiceCollection();
 //letsGo.ConfigureServices(services);
-using (var context = new Context())
+/*using (var context = new Context())
 {
     var acc = new Account()
     {
@@ -20,4 +21,12 @@ using (var context = new Context())
     context.SaveChanges();
     
 
-}
+}*/
+
+UM um = new UM();
+//um.userSignUp();
+um.userDelete();
+
+
+
+
