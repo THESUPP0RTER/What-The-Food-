@@ -120,7 +120,7 @@ namespace Console_Runner
             }
         }
 
-        public Account readData(string targetPK)
+        public Account userReadData(string targetPK)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Console_Runner
             }
         }
 
-        public bool updateData(string targetPK, string nEmail, string nFname, string nLname)
+        public bool userUpdateData(string targetPK, string nEmail, string nFname, string nLname)
         {
             try
             {
@@ -160,6 +160,40 @@ namespace Console_Runner
             {
                 return false;
             }
+        }
+
+        public bool authenticateUserPass(string user,string userPass)
+        {
+            Account acc = userReadData(user);
+
+            if (acc.Password == userPass)
+                return true;
+            else
+                return false;
+        }
+
+        public bool ValidateAdmin(Account acc)
+        {
+            if (acc.accessLevel == 2)
+                return true;
+            else
+                return false;
+        }
+        public bool validateAdmin(string user)
+        {
+            Account acc = userReadData(user);
+            if (acc.accessLevel == 2)
+                return true;
+            else
+                return false;
+        }
+
+        public bool ValidateUser(Account acc)
+        {
+            if (acc.accessLevel > 0)
+                return true;
+            else
+                return false;
         }
     }
     
