@@ -21,8 +21,17 @@ namespace User
         //Password getter and setter
         //[System.ComponentModel.DataAnnotations.Required]
         public string Password { get; set; }
-        
-      
+
+        public string ToString()
+        {
+            int pass = this.Password.Length;
+            string stars = "";
+            for(int i = 0; i < pass; i++)
+            {
+                stars += "*";
+            }
+            return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
+        }
 
     }
 }

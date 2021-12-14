@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211214012456_CreateCustomerDB")]
+    [Migration("20211214225925_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

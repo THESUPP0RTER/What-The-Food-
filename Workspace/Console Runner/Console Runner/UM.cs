@@ -50,10 +50,13 @@ namespace Console_Runner
                 {
                     context.accounts.Add(acc);
                     context.SaveChanges();
+                    Console.WriteLine("userSignUp(acc) WORKED!!");
                 }
                 return true;
             }catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("ERROR IN userSignUp(acc)");
                 return false;
             }
             
@@ -207,5 +210,23 @@ namespace Console_Runner
             else
                 return false;
         }
-    }
+        
+        public bool getAllUsers()
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    foreach (var account in context.accounts)
+                    {
+                        Console.WriteLine(account.ToString());
+                    }
+                }
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
+        }
+    }   
 }
