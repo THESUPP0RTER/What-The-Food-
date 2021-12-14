@@ -8,9 +8,10 @@ using User;
 
 namespace Console_Runner
 {
+    //Current user management class
     public class UM
     {
-
+        //User sign up will take in appropriate information from console and add new user to DB
         public bool userSignUp()
         {
             try
@@ -39,6 +40,8 @@ namespace Console_Runner
             }
             
         }
+
+        //User sign up will take in appropriate information from an account object and add new user to DB
         public bool userSignUp(Account acc)
         {
             try
@@ -55,7 +58,7 @@ namespace Console_Runner
             }
             
         }
-
+        //User sign up will take appropriate information from arguments and add new user to DB
         public bool userSignUp(string email, string first, string last)
         {
             try
@@ -81,6 +84,7 @@ namespace Console_Runner
 
         }
 
+        //will delete a user from a given PK from the command line
         public bool userDelete()
         {
             try
@@ -101,6 +105,7 @@ namespace Console_Runner
             }
         }
 
+        //will delete a user from a given PK from the argument 
         public bool userDelete(string email)
         {
             try
@@ -120,6 +125,7 @@ namespace Console_Runner
             }
         }
 
+        //will return an account object from the DB given a PK from the argument field
         public Account userReadData(string targetPK)
         {
             try
@@ -136,6 +142,7 @@ namespace Console_Runner
             }
         }
 
+        //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
         public bool userUpdateData(string targetPK, string nEmail, string nFname, string nLname)
         {
             try
@@ -162,6 +169,7 @@ namespace Console_Runner
             }
         }
 
+        //authenticates a users input password for login. True if pass matches, false otherwise
         public bool authenticateUserPass(string user,string userPass)
         {
             Account acc = userReadData(user);
@@ -172,6 +180,7 @@ namespace Console_Runner
                 return false;
         }
 
+        //validates that a user account is an admin, True if admin, else false
         public bool ValidateAdmin(Account acc)
         {
             if (acc.accessLevel == 2)
@@ -179,6 +188,8 @@ namespace Console_Runner
             else
                 return false;
         }
+
+        //validates that a user account is an admin, True if admin, else false
         public bool validateAdmin(string user)
         {
             Account acc = userReadData(user);
@@ -188,6 +199,7 @@ namespace Console_Runner
                 return false;
         }
 
+        //validates that the user is a valid account, if it is an account return true else false
         public bool ValidateUser(Account acc)
         {
             if (acc.accessLevel > 0)

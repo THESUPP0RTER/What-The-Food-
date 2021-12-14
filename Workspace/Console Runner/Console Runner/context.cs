@@ -10,12 +10,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Class1
 {
+    /*will run on startup, will configure the services to our database context
+     */
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         => services.AddDbContext<Context>();
         
     }
+
+    /*
+     * Will run when being configured and it will connect to our database
+     * Currently only configures the account table
+     */
     public class Context : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
