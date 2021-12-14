@@ -31,6 +31,10 @@ namespace Console_Runner.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("accessLevel")
                         .HasColumnType("int");
 

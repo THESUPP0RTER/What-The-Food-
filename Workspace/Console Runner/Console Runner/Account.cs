@@ -13,7 +13,13 @@ namespace User
         public string Lname { get; set; }
 
         public int accessLevel { get; set; }
+        //[System.ComponentModel.DataAnnotations.Required]
+        public string Password { get; set; }
+        
       
 
     }
 }
+
+//add-migration CreateCustomerDB
+//update-database -verbose

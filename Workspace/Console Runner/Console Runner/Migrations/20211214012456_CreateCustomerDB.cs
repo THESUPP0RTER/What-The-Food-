@@ -4,7 +4,7 @@
 
 namespace Console_Runner.Migrations
 {
-    public partial class AccountDB : Migration
+    public partial class CreateCustomerDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,9 @@ namespace Console_Runner.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Lname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    accessLevel = table.Column<int>(type: "int", nullable: false)
+                    accessLevel = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
