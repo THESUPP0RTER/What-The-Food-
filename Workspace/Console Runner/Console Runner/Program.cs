@@ -1,4 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+/*
+ * CURRENTLY ONLY A TEST FILE
+ */
 using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
