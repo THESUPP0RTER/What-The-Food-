@@ -15,7 +15,8 @@ namespace UnitTest
             public void CreateUserSuccess()
             {
                 //Arange
-                Account acc = makeTestUser();
+                string tester = "unitTester";
+                Account acc = makeTestUser(tester);
                 //Act
                 um.UserSignUp(acc);
                 //Assert
@@ -28,8 +29,10 @@ namespace UnitTest
             {
                 //Arange
                 Account currentUser = makeAdmin();
+                string tester = "unitTester";
+                makeTestUser(tester);
                 //Act
-                um.UserDelete(currentUser, "UnitTestUser");
+                um.UserDelete(currentUser, tester);
                 //Assert
                 Assert.True(context.accounts.Find("UnitTestUser") == null);
             }
@@ -38,7 +41,8 @@ namespace UnitTest
             {
                 //Arange
                 Account currentUser = makeAdmin();
-                Account testUser = makeTestUser();
+                string newTester = "newTester";
+                Account testUser = makeTestUser(newTester);
                 string nName = "new name";
                 string nlName = "new last name";
                 string nPassword = "NewPassword";
@@ -48,42 +52,35 @@ namespace UnitTest
                 //Assert
                 Assert.True(testUser.Fname == nName && testUser.Lname == nlName && testUser.Password == nPassword);
             }
+
             public Account makeAdmin()
             {
+                if (context.accounts.Find("UnitTestUser") != null)
+                {
+                    context.accounts.Remove(context.accounts.Find("UnitTestUser"));
+                }
                 Account currentUser = new Account();
-                if (context.accounts.Find("UnitTestAdmin") == null)
-                {
-
-                    currentUser.Email = "UnitTestAdmin";
-                    currentUser.Password = "password1";
-                    currentUser.Fname = "fname";
-                    currentUser.Lname = "lname";
-                    currentUser.accessLevel = 2;
-                    um.UserSignUp(currentUser);
-                }
-                else
-                {
-                    currentUser = context.accounts.Find("UnitTestAdmin");
-                }
+                currentUser.Email = "UnitTestAdmin";
+                currentUser.Password = "password1LetsMakeThisReallyLong4Security";
+                currentUser.Fname = "fname";
+                currentUser.Lname = "lname";
+                currentUser.accessLevel = 2;
+                um.UserSignUp(currentUser);
                 return currentUser;
             }
-            public Account makeTestUser()
+            public Account makeTestUser(string pk)
             {
+                if (context.accounts.Find(pk) != null)
+                {
+                    context.accounts.Remove(context.accounts.Find(pk));
+                }
                 Account currentUser = new Account();
-                if (context.accounts.Find("UnitTestUser") == null)
-                {
-
-                    currentUser.Email = "UnitTestUser";
-                    currentUser.Password = "password1";
-                    currentUser.Fname = "fname";
-                    currentUser.Lname = "lname";
-                    currentUser.accessLevel = 1;
-                    um.UserSignUp(currentUser);
-                }
-                else
-                {
-                    currentUser = context.accounts.Find("UnitTestUser");
-                }
+                currentUser.Email = pk;
+                currentUser.Password = "password1";
+                currentUser.Fname = "fname";
+                currentUser.Lname = "lname";
+                currentUser.accessLevel = 1;
+                um.UserSignUp(currentUser);
                 return currentUser;
             }
         }
