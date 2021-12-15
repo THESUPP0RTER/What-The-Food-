@@ -15,7 +15,7 @@ using Console_Runner;
  * ensure admin is the only one that can access admin stuff
  * ensure system failures dont bring down system
  */
-UM um = new UM();
+
 /*Account admin = new Account();
 admin.Email = "admin";
 admin.Password = "pass";
@@ -24,15 +24,19 @@ admin.isActive = true;
 admin.Fname = "matt0";
 admin.Lname = "q";
 um.UserSignUp(admin);*/
+
+
+UM um = new UM();
+
 Console.Write("Please sign in. Email: ");
 string id = Console.ReadLine();
 Console.Write("\nPassword: ");
 string password = Console.ReadLine();
-bool loggedIn = um.AuthenticateUserPass(id, password);
-Account currentUser = new Account();
-if (loggedIn)
+Account currentUser = um.signIn(id, password);
+bool loggedIn = false;
+if (currentUser != null)
 {
-    currentUser = um.UserReadData(id);
+    loggedIn = true;
 }
 string input = "";
 
@@ -50,7 +54,7 @@ while (input != "exit" && loggedIn)
     else
     if (input == "userdelete")//Deletes an account
     {
-        um.UserDelete();
+        um.UserDelete(currentUser);
     }
     else
     if (input == "userreaddata") //reads data from a specified account
@@ -60,7 +64,7 @@ while (input != "exit" && loggedIn)
     else
     if (input == "userupdatedata") //Updates data of a specified account
     {
-        um.UserUpdateData();
+        um.UserUpdateData(currentUser);
     }
     else
     if (input == "getallusers") // prints out all user data in the database.

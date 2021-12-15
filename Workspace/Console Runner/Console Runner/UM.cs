@@ -114,8 +114,13 @@ namespace Console_Runner
             }
         }
         //will delete a user through console
-        public bool UserDelete()
+        public bool UserDelete(Account currentUser)
         {
+            if (!currentUser.isAdmin())
+            {
+                Console.WriteLine("ADMIN ACCESS NEEDED");
+                return false;
+            }
             try
             {
                 using (var context = new Context())
@@ -201,8 +206,13 @@ namespace Console_Runner
                 return false;
             }
         }
-        public bool UserUpdateData()
+        public bool UserUpdateData(Account currentUser)
         {
+            if (!currentUser.isAdmin())
+            {
+                Console.WriteLine("ADMIN ACCESS NEEDED");
+                return false;
+            }
             try
             {
                 using (var context = new Context())
@@ -235,11 +245,18 @@ namespace Console_Runner
         public bool AuthenticateUserPass(string user,string userPass)
         {
             Account acc = UserReadData(user);
-            if (acc == null) return false;
-            if (acc.Password == userPass)
-                return true;
+            return (acc != null && acc.Password == userPass);
+        }
+        public Account signIn(string user, string userPass)
+        {
+            if (AuthenticateUserPass(user, userPass))
+            {
+                return UserReadData(user);
+            }
             else
-                return false;
+            {
+                return null;
+            }
         }
         
         public bool GetAllUsers()
