@@ -132,6 +132,11 @@ namespace Console_Runner
                     {
                         return false;
                     }
+                    if (acc.isAdmin() && (AdminCount() < 2))
+                    {
+                        Console.WriteLine("Deleting this account would result in there being no admins.");
+                        return false;
+                    }
                     Console.WriteLine("Deletion successful.");
                     context.Remove(acc);
                     context.SaveChanges();
@@ -169,6 +174,7 @@ namespace Console_Runner
                     Console.WriteLine("Enter email of user you wish to look up");
                     string targetPK = Console.ReadLine();
                     Account acc = context.accounts.Find(targetPK);
+                    Console.WriteLine(acc.ToString());
                     return acc;
                 }
             }
@@ -294,6 +300,11 @@ namespace Console_Runner
                         Console.WriteLine("No such account exists");
                         return false;
                     }
+                    if (acc.isAdmin() && (AdminCount() < 2))
+                    {
+                        Console.WriteLine("Disabling this account would result in there being no admins.");
+                        return false;
+                    }
                     acc.isActive = false;
                     context.accounts.Update(acc);
                     Console.WriteLine("successfully disabled account");
@@ -336,6 +347,18 @@ namespace Console_Runner
             {
                 return false;
             }
+        }
+        public int AdminCount()
+        {
+            int count = 0;
+            using (var context = new Context())
+            {
+                foreach (var account in context.accounts)
+                {
+                    if (account.accessLevel >= 2 && account.isActive) count++;
+                }
+            }
+            return count;
         }
     }   
 }
