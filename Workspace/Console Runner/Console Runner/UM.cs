@@ -74,6 +74,7 @@ namespace Console_Runner
                         Console.WriteLine("email already in use");
                         return false;
                     }
+                    acc.isActive = true;
                     context.accounts.Add(acc);
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
@@ -131,8 +132,9 @@ namespace Console_Runner
          * Delets a user corosponding to the email provided as arg
          * Takes in currentUser to validate user calling method has permission to do so
          */
-        public bool UserDelete(Account currentUser, string email)
+        public bool UserDelete(Account currentUser, string targetPK)
         {
+            string email = targetPK;
             if (!currentUser.isAdmin() || !currentUser.isActive)
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
@@ -142,7 +144,6 @@ namespace Console_Runner
             {
                 using (var context = new Context())
                 {
-                    string targetPK = email;
                     Account acc = context.accounts.Find(targetPK);
                     if (acc == null)
                     {
@@ -253,10 +254,18 @@ namespace Console_Runner
 
 
         //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
-        public bool UserUpdateData(string targetPK, string nFname, string nLname, string npassword)
+        public bool UserUpdateData(Account currentUser, string targetPK, string nFname, string nLname, string npassword)
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
+            if (currentUser.Email != targetPK)
+            {
+                if (!currentUser.isAdmin() || !currentUser.isActive)
+                {
+                    logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
+                    return false;
+                }
+            }
             try
             {
                 using (var context = new Context())
@@ -313,7 +322,7 @@ namespace Console_Runner
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false; 
             string fTemp = "", lTemp = "", pTemp = "";
-            if (!currentUser.isAdmin())
+            if (!currentUser.isAdmin() || !currentUser.isActive)
             {
                 logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                 return false;

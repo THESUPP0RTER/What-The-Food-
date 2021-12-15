@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HiWkUxgWpzuTkBxRDvSpS8fnmniM3mZMHzzHIxR83cOwlkkaby14ZffNQkTP+I0jdjynd1Z3cQzhmRrXpxiQlg==",
+  "dgSpecHash": "DmMzEkLUFcwzOlwWelLbXc1kR1L0oDFz4ya0thEcxbhtZ7+UuGD3GpWc8HFxtVe8t2Pq75gD9/8vdSH6nTatLw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj",
   "expectedPackageFiles": [
@@ -121,7 +121,15 @@
     "C:\\Users\\Matth\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\Matth\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\Matth\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\Matth\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\Matth\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit\\2.4.1\\xunit.2.4.1.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.abstractions\\2.0.3\\xunit.abstractions.2.0.3.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.analyzers\\0.10.0\\xunit.analyzers.0.10.0.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.assert\\2.4.1\\xunit.assert.2.4.1.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.core\\2.4.1\\xunit.core.2.4.1.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.extensibility.core\\2.4.1\\xunit.extensibility.core.2.4.1.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.extensibility.execution\\2.4.1\\xunit.extensibility.execution.2.4.1.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\xunit.runner.visualstudio\\2.4.3\\xunit.runner.visualstudio.2.4.3.nupkg.sha512"
   ],
   "logs": []
 }

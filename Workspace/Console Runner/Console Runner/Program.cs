@@ -50,6 +50,7 @@ while (!loggedIn)
     
     while (input != "exit" && loggedIn)
     {
+        
 
         Console.WriteLine("Enter one of the following commands to demo functionality: \nusersignup\nUserDelete\nUserReadData\nShowAllUsers\nDisableAccount\nEnableAccount\npromoteToAdmin\nsignOut\nExit");
 
