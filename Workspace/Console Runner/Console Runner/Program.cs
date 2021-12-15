@@ -14,18 +14,21 @@ using Console_Runner;
  * ensure system failures dont bring down system
  * add new admin account
  */
-
-Account admin = new Account();
-admin.Email = "admin";
-admin.Password = "pass";
-admin.accessLevel = 2;
-admin.isActive = true;
-admin.Fname = "matt0";
-admin.Lname = "q";
-
 UM um = new UM();
 
-um.UserSignUp(admin);
+if(um.AdminCount() == 0)
+{
+    Account admin = new Account();
+    admin.Email = "admin";
+    admin.Password = "pass";
+    admin.accessLevel = 2;
+    admin.isActive = true;
+    admin.Fname = "matt";
+    admin.Lname = "q";
+    um.UserSignUp(admin);
+}
+
+
 
 bool loggedIn = false;
 
@@ -48,7 +51,7 @@ while (!loggedIn)
     while (input != "exit" && loggedIn)
     {
 
-        Console.WriteLine("Enter one of the following commands to demo functionality: \nusersignup\nUserDelete\nUserReadData\nGetAllUsers\nDisableAccount\nEnableAccount\nExit");
+        Console.WriteLine("Enter one of the following commands to demo functionality: \nusersignup\nUserDelete\nUserReadData\nShowAllUsers\nDisableAccount\nEnableAccount\npromoteToAdmin\nsignOut\nExit");
 
         Console.WriteLine("..................................................................");
         input = Console.ReadLine();
@@ -73,19 +76,30 @@ while (!loggedIn)
             um.UserUpdateData(currentUser);
         }
         else
-        if (input == "getallusers") // prints out all user data in the database.
+        if (input == "showallusers") // prints out all user data in the database.
         {
             um.GetAllUsers();
         }
         else
-        if (input == "disableaccount")
+        if (input == "disableaccount") // will prompt user for targetPK and disable said account if conditions allow
         {
             um.DisableAccount(currentUser);
         }
         else
-        if (input == "enableaccount")
+        if (input == "enableaccount") // will ask for targetPK and enable said account if conditions allow
         {
             um.EnableAccount(currentUser);
+        }
+        else
+        if(input == "promotetoadmin") // will ask for targetPK and promote a user to admin if conditions allow
+        {
+            um.promoteToAdmin(currentUser);
+        }
+        if (input == "signout") // signs out of current ccount session
+        {
+            loggedIn = false;
+            currentUser = null;
+            break;
         }
         else
             Console.WriteLine("not valid command");

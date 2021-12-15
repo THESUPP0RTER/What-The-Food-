@@ -52,6 +52,7 @@ namespace Console_Runner
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }catch(Exception ex)
             {
@@ -61,17 +62,23 @@ namespace Console_Runner
             
         }
 
-        //User sign up will take in appropriate information from an account object and add new user to DB
+        //User sign up will take in an account object and persist it to the db.
         public bool UserSignUp(Account acc)
         {
             try
             {
                 using(var context = new Context())
                 {
+                    if (context.accounts.Find(acc.Email) != null)
+                    {
+                        Console.WriteLine("email already in use");
+                        return false;
+                    }
                     context.accounts.Add(acc);
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }catch (Exception ex)
             {
@@ -81,7 +88,9 @@ namespace Console_Runner
             }
             
         }
-        //User sign up will take appropriate information from arguments and add new user to DB
+        /*
+         * takes params to create a new account object. If successful persists account to db
+         */
         public bool UserSignUp(string email, string first, string last, string pass)
         {
             try
@@ -89,18 +98,25 @@ namespace Console_Runner
 
                 using (var context = new Context())
                 {
+                    if (context.accounts.Find(email) != null)
+                    {
+                        Console.WriteLine("email already in use");
+                        return false;
+                    }
                     var acc = new Account()
                     {
                         Email = email,
                         Fname = first,
                         Lname = last,
                         Password = pass,
-                        isActive = true
+                        isActive = true,
+                        accessLevel = 1
                     };
                     context.accounts.Add(acc);
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -111,9 +127,17 @@ namespace Console_Runner
 
         }
 
-        //will delete a user from a given PK from the argument 
-        public bool UserDelete(string email)
+        /*
+         * Delets a user corosponding to the email provided as arg
+         * Takes in currentUser to validate user calling method has permission to do so
+         */
+        public bool UserDelete(Account currentUser, string email)
         {
+            if (!currentUser.isAdmin() || !currentUser.isActive)
+            {
+                logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
+                return false;
+            }
             try
             {
                 using (var context = new Context())
@@ -122,13 +146,18 @@ namespace Console_Runner
                     Account acc = context.accounts.Find(targetPK);
                     if (acc == null)
                     {
-                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
+                    if (acc.isAdmin() && (AdminCount() < 2))
+                    {
+                        Console.WriteLine("Deleting this account would result in there being no admins.");
                         return false;
                     }
                     context.Remove(acc);
                     context.SaveChanges();
                     logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", email);
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -137,10 +166,12 @@ namespace Console_Runner
                 return false;
             }
         }
-        //will delete a user through console
+        /*will delete a user through console for demo purposes
+         * takes currentUser to validate user calling this function has permission to do so
+         */
         public bool UserDelete(Account currentUser)
         {
-            if (!currentUser.isAdmin())
+            if (!currentUser.isAdmin() || !currentUser.isActive)
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
@@ -165,6 +196,7 @@ namespace Console_Runner
                     context.Remove(acc);
                     context.SaveChanges();
                     logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", currentUser.Email);
+                    Console.WriteLine("UM operation was successful");
                     return true ;
                 }
             }
@@ -183,6 +215,7 @@ namespace Console_Runner
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
+                    Console.WriteLine("UM operation was successful");
                     return acc;
                 }
             }
@@ -192,6 +225,9 @@ namespace Console_Runner
                 return null;
             }
         }
+        /*
+         * uses console to read and display information on a user to console. For demo purposes
+         */
         public Account UserReadData()
         {
             try
@@ -203,6 +239,7 @@ namespace Console_Runner
                     Account acc = context.accounts.Find(targetPK);
 
                     Console.WriteLine(acc.ToString());
+                    Console.WriteLine("UM operation was successful");
                     return acc;
                 }
             }
@@ -216,22 +253,19 @@ namespace Console_Runner
 
 
         //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
-        public bool UserUpdateData(string targetPK, string nEmail, string nFname, string nLname)
+        public bool UserUpdateData(string targetPK, string nFname, string nLname, string npassword)
         {
-            bool emailChanged = false, fNameChanged = false, lNameChanged = false;
-            string eTemp = "", fTemp = "", lTemp = "";
+            bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
+            string fTemp = "", lTemp = "", pTemp = "";
             try
             {
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
                     if (acc == null)
-                        Console.WriteLine("NULL ACCOUNT FOUND");
-                    if (nEmail != null) 
                     {
-                        eTemp = acc.Email;
-                        acc.Email = nEmail;
-                        emailChanged = true;
+                        Console.WriteLine("NULL ACCOUNT FOUND");
+                         return false;
                     }
                     if (nFname != null)
                     {
@@ -244,17 +278,25 @@ namespace Console_Runner
                         lTemp = acc.Lname;
                         acc.Lname = nLname;
                         lNameChanged = true;
+                    }if(npassword != null)
+                    {
+                        pTemp = acc.Password;
+                        acc.Password = npassword;
+                        passwordChanged = true;
                     }
+                    
                     context.accounts.Update(acc);
                     context.SaveChanges();
 
-                    if(emailChanged)
-                        logger.logAccountEmailChange(UM_CATEGORY, "test page", true, "", acc.Email, eTemp, acc.Email);
                     if(fNameChanged)
                         logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
                     if(lNameChanged)
                         logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
+                    if (passwordChanged)
+                        logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
+
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -263,10 +305,14 @@ namespace Console_Runner
                 return false;
             }
         }
+        /*
+         * Updates the target users data through command line. This is for demo purposes.
+         * currentUser is taken in to validate the user calling this method has access to do so.
+         */
         public bool UserUpdateData(Account currentUser)
         {
-            bool fNameChanged = false, lNameChanged = false;
-            string fTemp = "", lTemp = "";
+            bool fNameChanged = false, lNameChanged = false, passwordChanged = false; 
+            string fTemp = "", lTemp = "", pTemp = "";
             if (!currentUser.isAdmin())
             {
                 logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
@@ -288,17 +334,28 @@ namespace Console_Runner
                     string nFname = Console.ReadLine();
                     Console.WriteLine("Enter new Last Name or enter to skip");
                     string nLname = Console.ReadLine();
+                    Console.WriteLine("Enter new password or enter to skip");
+                    string npassword = Console.ReadLine();
+
                     if (acc == null)
                         Console.WriteLine("NULL ACCOUNT FOUND");
                     if (nFname != null)
                     {
+                        fTemp = acc.Fname;
                         acc.Fname = nFname;
                         fNameChanged = true;
                     }
                     if (nLname != null)
                     {
+                        lTemp = acc.Lname;
                         acc.Lname = nLname;
                         lNameChanged=true;
+                    }
+                    if (nLname != null)
+                    {
+                        pTemp = acc.Password; 
+                        acc.Password = npassword;
+                        passwordChanged = true;
                     }
                     context.accounts.Update(acc);
                     context.SaveChanges();
@@ -306,7 +363,10 @@ namespace Console_Runner
                         logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
                     if (lNameChanged)
                         logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
+                    if (passwordChanged)
+                        logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -322,6 +382,7 @@ namespace Console_Runner
             Account acc = UserReadData(user);
             return (acc != null && acc.Password == userPass);
         }
+        //takes in username and password. If valid returns an account object for the user with specified data.
         public Account signIn(string user, string userPass)
         {
             if (AuthenticateUserPass(user, userPass))
@@ -335,7 +396,7 @@ namespace Console_Runner
                 return null;
             }
         }
-        
+        //retrieves and prints a list of all users in the databse to the console.
         public bool GetAllUsers()
         {
             try
@@ -347,6 +408,7 @@ namespace Console_Runner
                         Console.WriteLine(account.ToString());
                     }
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }catch(Exception ex)
             {
@@ -354,8 +416,14 @@ namespace Console_Runner
                 return false;
             }
         }
+        /*
+         * Disables the account with email of targetPK if exists. This method is for console demoing.
+         * currentUser is taken in to validate the user calling this has permission to do so
+         * targetPK is gotten through command line
+         */
         public bool DisableAccount(Account currentUser)
-        {   if (!currentUser.isAdmin())
+        {
+            if (!currentUser.isAdmin() || !currentUser.isActive)
             {
                 logger.logAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
@@ -383,6 +451,7 @@ namespace Console_Runner
                     logger.logAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -391,9 +460,91 @@ namespace Console_Runner
                 return false;
             }
         }
+        /*
+         * Disables the account with email of targetPK if exists
+         * currentUser is taken in to validate the user calling this has permission to do so
+         */
+        public bool DisableAccount(Account currentUser, string targetPK)
+        {
+            if (!currentUser.isAdmin() || !currentUser.isActive)
+            {
+                logger.logAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                return false;
+            }
+            try
+            {
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
+                    {
+                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
+                    if (acc.isAdmin() && (AdminCount() < 2))
+                    {
+                        Console.WriteLine("Disabling this account would result in there being no admins.");
+                        return false;
+                    }
+                    acc.isActive = false;
+                    context.accounts.Update(acc);
+                    context.SaveChanges();
+                    logger.logAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+
+                }
+                Console.WriteLine("UM operation was successful");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.logAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                return false;
+            }
+        }
+        /*
+         * Enables the targeted account. 
+         * currentUser is used to validate that the person calling this method has permission to do so.
+         * targetPK is the email of the user whos account is being activated
+         */
+        public bool EnableAccount(Account currentUser, string targetPK)
+        {
+            if (!currentUser.isAdmin() || !currentUser.isActive)
+            {
+                logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                return false;
+            }
+            try
+            {
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
+                    {
+                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
+                    acc.isActive = true;
+                    context.accounts.Update(acc);
+                    context.SaveChanges(true);
+                    logger.logAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+
+                }
+                Console.WriteLine("UM operation was successful");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.logAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                return false;
+            }
+        }
+        /*
+         * Enables the targeted account. Gets targetPK through command line. This version is for console demo
+         * currentUser is used to validate that the person calling this method has permission to do so.
+         */
         public bool EnableAccount(Account currentUser)
         {
-            if (!currentUser.isAdmin())
+            if (!currentUser.isAdmin() || !currentUser.isActive)
             {
                 logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
@@ -416,6 +567,7 @@ namespace Console_Runner
                     logger.logAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
                 }
+                Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
@@ -424,6 +576,10 @@ namespace Console_Runner
                 return false;
             }
         }
+         /*promotes the target user to admin. This version is for use with command line for demo purposes.
+         * takes in currentUser to verify the current session is being handled by an admin
+         * targeted email comes through command line
+         */
         public bool promoteToAdmin(Account currentUser)
         {
             Console.WriteLine("Enter target email");
@@ -445,6 +601,7 @@ namespace Console_Runner
                         context.SaveChanges();
                         logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
                     }
+                    Console.WriteLine("UM operation was successful");
                     return true;
                 }
                 logger.logAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
@@ -456,6 +613,44 @@ namespace Console_Runner
                 return false;
             }
         }
+        /*promotes the target user to admin
+         * takes in currentUser to verify the current session is being handled by an admin
+         * targetPK is the email(primary key) of the user being targeted
+         */
+        
+        public bool promoteToAdmin(Account currentUser, string targetPK)
+        {
+            try
+            {
+                if (currentUser.isAdmin() && currentUser.isActive)
+                {
+                    using (var context = new Context())
+                    {
+                        Account acc = context.accounts.Find(targetPK);
+                        if (acc == null)
+                        {
+                            Console.WriteLine("No such account exists");
+                            return false;
+                        }
+                        acc.accessLevel = 2;
+                        context.Update(acc);
+                        context.SaveChanges();
+                        logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                    }
+                    Console.WriteLine("UM operation was successful");
+                    return true;
+                }
+                logger.logAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                logger.logAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
+                return false;
+            }
+        }
+        //returns the number of admins in the database
         public int AdminCount()
         {
             int count = 0;
