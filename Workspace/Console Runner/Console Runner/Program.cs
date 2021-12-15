@@ -15,17 +15,18 @@ using Console_Runner;
  * add new admin account
  */
 
-/*Account admin = new Account();
+Account admin = new Account();
 admin.Email = "admin";
 admin.Password = "pass";
 admin.accessLevel = 2;
 admin.isActive = true;
 admin.Fname = "matt0";
 admin.Lname = "q";
-um.UserSignUp(admin);*/
-
 
 UM um = new UM();
+
+um.UserSignUp(admin);
+
 bool loggedIn = false;
 
 while (!loggedIn)
@@ -82,7 +83,7 @@ while (!loggedIn)
             um.DisableAccount(currentUser);
         }
         else
-        if (input == "enableaccounts")
+        if (input == "enableaccount")
         {
             um.EnableAccount(currentUser);
         }
