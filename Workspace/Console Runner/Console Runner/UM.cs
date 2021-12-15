@@ -87,27 +87,6 @@ namespace Console_Runner
 
         }
 
-        //will delete a user from a given PK from the command line
-        public bool userDelete()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    Console.WriteLine("Enter email of account to be deleted");
-                    string targetPK = Console.ReadLine();
-                    Account acc = context.accounts.Find(targetPK);
-                    context.Remove(acc);
-                    context.SaveChanges();
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
         //will delete a user from a given PK from the argument 
         public bool userDelete(string email)
         {
@@ -127,6 +106,32 @@ namespace Console_Runner
                 return false;
             }
         }
+        //will delete a user through console
+        public Account userDelete()
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    Console.WriteLine("Enter email address of the account desired to delete");
+                    string targetPK = Console.ReadLine();
+                    Account acc = context.accounts.Find(targetPK);
+                    Console.WriteLine("Delete user with information " + acc.ToString + " \n y or n");
+                    string Continue = Console.ReadLine().ToLower();
+                    if (Continue == "y")
+                    {
+                        Console.WriteLine("Deletion successful.");
+                        context.Remove(acc);
+                        context.SaveChanges();
+                    }
+                    return acc;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
         //will return an account object from the DB given a PK from the argument field
         public Account userReadData(string targetPK)
@@ -144,6 +149,25 @@ namespace Console_Runner
                 return null;
             }
         }
+        public Account userReadData()
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    Console.WriteLine("Enter email of user you wish to look up");
+                    string targetPK = Console.ReadLine();
+                    Account acc = context.accounts.Find(targetPK);
+                    return acc;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
 
         //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
         public bool userUpdateData(string targetPK, string nEmail, string nFname, string nLname)
@@ -160,6 +184,35 @@ namespace Console_Runner
                     if (nFname != null)
                         acc.Fname = nFname;
                     if (nLname != null) 
+                        acc.Lname = nLname;
+                    context.accounts.Update(acc);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool userUpdateData()
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    Console.WriteLine("Enter email address");
+                    string targetPK = Console.ReadLine();
+                    Account acc = context.accounts.Find(targetPK);
+                    Console.WriteLine("Enter new First name or enter to skip");
+                    string nFname = Console.ReadLine();
+                    Console.WriteLine("Enter new Last Name or enter to skip");
+                    string nLname = Console.ReadLine();
+                    if (acc == null)
+                        Console.WriteLine("NULL ACCOUNT FOUND");
+                    if (nFname != null)
+                        acc.Fname = nFname;
+                    if (nLname != null)
                         acc.Lname = nLname;
                     context.accounts.Update(acc);
                     context.SaveChanges();
@@ -224,6 +277,50 @@ namespace Console_Runner
                 }
                 return true;
             }catch(Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DisableAccount()
+        {
+            try
+            {
+                Console.WriteLine("Enter email address");
+                string targetPK = Console.ReadLine();
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    if (acc.accessLevel % 2 == 0 && acc.accessLevel != 0)
+                    {
+                        acc.accessLevel -= 1;
+                        context.accounts.Add(acc);
+                    }
+                }
+                    return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool EnableAccount()
+        {
+            try
+            {
+                Console.WriteLine("Enter email address");
+                string targetPK = Console.ReadLine();
+                using (var context = new Context())
+                {
+                    Account acc = context.accounts.Find(targetPK);
+                    if (acc.accessLevel % 2 == 1 && acc.accessLevel != 0)
+                    {
+                        acc.accessLevel += 1;
+                        context.accounts.Add(acc);
+                    }
+
+                }
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }

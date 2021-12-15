@@ -38,6 +38,9 @@ namespace Console_Runner.Migrations
                     b.Property<int>("accessLevel")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("Email");
 
                     b.ToTable("accounts");

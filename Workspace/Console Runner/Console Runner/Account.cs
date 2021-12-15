@@ -16,10 +16,18 @@ namespace User
         public string Fname { get; set; }
         //Last name setter and getter
         public string Lname { get; set; }
-        //accessLevel getter and setter
+        /*accessLevel getter and setter
+         * 0 No account
+         * 1 Dectivated user account
+         * 2 Active User account
+         * 3 Deactive Admin
+         * 4 Active Admin
+         */
         public int accessLevel { get; set; }
         //Password getter and setter
         //[System.ComponentModel.DataAnnotations.Required]
+        public bool isActive { get; set; }
+
         public string Password { get; set; }
 
         public string ToString()

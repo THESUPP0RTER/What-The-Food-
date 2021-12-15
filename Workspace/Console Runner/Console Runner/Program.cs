@@ -7,18 +7,33 @@ using User;
 using Class1;
 using Console_Runner;
 
+UM um = new UM();
 
-//acc.Password = "password";
-/*string input = Console.ReadLine();
-if (input == "userSignUp")
+string input = Console.ReadLine();
+if (input == "userSignUp")// Create account
 {
     um.userSignUp();
 }
-if (input == "userDelete")
-{   
-    string email = Console.ReadLine();
-    um.userDelete(email);
-}*/
-UM um = new UM();
+if (input == "userDelete")//Deletes an account
+{
+    um.userDelete();
+}
+if (input == "UserReadData") //reads data from a specified account
+{
+    um.userReadData();
+}
+if (input == "userUpdateData") //Updates data of a specified account
+{
+    um.userUpdateData();
+}
+if (input == "getAllUsers") // prints out all user data in the database.
+{
+    um.getAllUsers();
+}
+if (input == "DisableAccount")
+{
+
+}
+
 
 um.getAllUsers();
