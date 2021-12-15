@@ -3,14 +3,165 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.IO.Compression;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Console_Runner
 {
+    public class Archiving
+    {
+        private Thread _archiveThread;
+        private string _currentMonth;
+
+        public Archiving()
+        {
+            _currentMonth = DateTime.Now.ToString("MMMM");
+        }
+
+        //will start the thread
+        public void archiveStartThread()
+        {
+            ThreadStart archiver = new ThreadStart(_archiveActivate);
+            _archiveThread = new Thread(archiver);
+            _archiveThread.Start();
+        }
+
+        //activates the threads function
+        private void _archiveActivate()
+        {
+            //get working on the minute
+            string current = DateTime.Now.ToString("s");
+            string offset = current.Substring(current.Length - 2);
+            int numSecOff = Int32.Parse(offset);
+
+            Thread.Sleep(1000 * numSecOff);
+
+            //get working on the hour
+            current = DateTime.Now.ToString("s");
+            offset = current.Substring(current.Length - 5, current.Length - 3);
+            int numHourOff = Int32.Parse(offset);
+
+            Thread.Sleep(1000 * 60 * numHourOff);
+
+            while (true)
+            {
+                this._checkToArchive();
+                Thread.Sleep(1000 * 60 * 60); //check every hour on the hour
+            }
+            this.archiveStopThread();
+        }
+
+        //will stop the thread
+        public bool archiveStopThread()
+        {
+            try
+            {
+                _archiveThread.Abort();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR IN STOPPING THREAD: " + ex.Message);
+                return false;
+            }
+        }
+
+        //code that handles checking if we need to archive the current logs
+        private bool _checkToArchive()
+        {
+            try
+            {
+                if (_newMonth())
+                {
+                    if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"));
+                        ZipFile.CreateFromDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"),
+                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
+                    }
+
+                    DateTime currentDate = DateTime.Now;
+                    string[] lines = System.IO.File.ReadAllLines(Path.Combine(Environment.CurrentDirectory, "Logs.txt"));
+
+                    int cuttoff = _findCutoff(lines, currentDate);
+
+                    using (FileStream zipToOpen = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")
+                        , FileMode.Open))
+                    {
+                        using (ZipArchive zipArchive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                        {
+                            ZipArchiveEntry newFile = zipArchive.CreateEntry(_currentMonth + " Logs.txt");
+                            using (StreamWriter sw = new StreamWriter(newFile.Open()))
+                            {
+                                Console.WriteLine("Archive Log file created.");
+                                sw.WriteLine("-------Start of logs-------");
+                                for (int i = 1; i < cuttoff; i++)
+                                {
+                                    sw.WriteLine(lines[i]);
+                                }
+                            }
+                        }
+                    }
+
+                    File.Delete(Path.Combine(Environment.CurrentDirectory, "Logs.txt"));
+                    using (StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, " Logs.txt")))
+                    {
+                        sw.WriteLine("-------Start of logs-------");
+                        for (int i = cuttoff; i < lines.Length; i++)
+                        {
+                            sw.WriteLine(lines[i]);
+                        }
+                    }
+
+                    File.Move(Path.Combine(Environment.CurrentDirectory, "Logs.txt"), Path.Combine(Environment.CurrentDirectory, "Log Storage"));
+
+                    _currentMonth = currentDate.ToString("MMMM");
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR IN ARCHIVING: " + ex.Message);
+                return false;
+            }
+
+        }
+
+        //checks to see if the current month has changed
+        private bool _newMonth()
+        {
+            if (_currentMonth != DateTime.Now.ToString("MMMM"))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private int _findCutoff(string[] text, DateTime curr)
+        {
+            double diff = Int32.MaxValue;
+            int cutoff = 1;
+            while (diff > 30)
+            {
+                diff = curr.Subtract(DateTime.Parse(text[cutoff].Substring(0, 10))).TotalDays;
+                if (diff < 30)
+                    return cutoff;
+                cutoff++;
+            }
+            return cutoff;
+        }
+    }
+
     public class Logging
     {
-        string filePath = Path.Combine(Environment.CurrentDirectory, "Logs.txt");
+        string filePath = Path.Combine(Environment.CurrentDirectory, "Logs.txt"); //path to logs file
 
+        //logging objects
         public Logging()
         {
             Console.WriteLine(filePath);

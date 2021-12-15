@@ -15,6 +15,8 @@ using Console_Runner;
  * add new admin account
  */
 UM um = new UM();
+Archiving archiver = new Archiving();
+archiver.archiveStartThread();
 
 if(um.AdminCount() == 0)
 {
@@ -123,3 +125,4 @@ while (!loggedIn)
     }
 }
 
+archiver.archiveStopThread();
