@@ -18,10 +18,8 @@ namespace User
         public string Lname { get; set; }
         /*accessLevel getter and setter
          * 0 No account
-         * 1 Dectivated user account
-         * 2 Active User account
-         * 3 Deactive Admin
-         * 4 Active Admin
+         * 1 user account
+         * 2 Admin account
          */
         public int accessLevel { get; set; }
         //Password getter and setter
@@ -41,7 +39,18 @@ namespace User
             return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
         }
 
+        public bool isAdmin()
+        {
+            return this.accessLevel >= 2;
+
+        }
+        public bool isUser()
+        {
+            return this.accessLevel >= 1;
+        }
+
     }
+    
 }
 
 //add-migration CreateCustomerDB

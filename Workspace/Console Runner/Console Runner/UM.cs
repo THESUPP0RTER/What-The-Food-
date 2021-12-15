@@ -12,7 +12,7 @@ namespace Console_Runner
     public class UM
     {
         //User sign up will take in appropriate information from console and add new user to DB
-        public bool userSignUp()
+        public bool UserSignUp()
         {
             try
             {
@@ -23,13 +23,18 @@ namespace Console_Runner
                     Account acc = new Account();
                     Console.WriteLine("Enter Email");
                     acc.Email = Console.ReadLine();
+                    while(context.accounts.Find(acc.Email) != null)
+                    {
+                        Console.WriteLine("EMAIL ALREADY IN USE Enter a different email");
+                        acc.Email = Console.ReadLine();
+                    }
                     Console.WriteLine("Enter password");
-                   // acc.Password = Console.ReadLine();
+                    acc.Password = Console.ReadLine();
                     Console.WriteLine("Enter fname");
                     acc.Fname = Console.ReadLine();
                     Console.WriteLine("Enter lname");
                     acc.Lname = Console.ReadLine();
-
+                    acc.isActive = true;
                     context.accounts.Add(acc);
                     context.SaveChanges();
                 }
@@ -42,7 +47,7 @@ namespace Console_Runner
         }
 
         //User sign up will take in appropriate information from an account object and add new user to DB
-        public bool userSignUp(Account acc)
+        public bool UserSignUp(Account acc)
         {
             try
             {
@@ -62,7 +67,7 @@ namespace Console_Runner
             
         }
         //User sign up will take appropriate information from arguments and add new user to DB
-        public bool userSignUp(string email, string first, string last)
+        public bool UserSignUp(string email, string first, string last, string pass)
         {
             try
             {
@@ -73,8 +78,10 @@ namespace Console_Runner
                     {
                         Email = email,
                         Fname = first,
-                        Lname = last
-                    };
+                        Lname = last,
+                        Password = pass,
+                        isActive = true
+                };
                     context.accounts.Add(acc);
                     context.SaveChanges();
                 }
@@ -88,7 +95,7 @@ namespace Console_Runner
         }
 
         //will delete a user from a given PK from the argument 
-        public bool userDelete(string email)
+        public bool UserDelete(string email)
         {
             try
             {
@@ -107,7 +114,7 @@ namespace Console_Runner
             }
         }
         //will delete a user through console
-        public Account userDelete()
+        public bool UserDelete()
         {
             try
             {
@@ -116,25 +123,24 @@ namespace Console_Runner
                     Console.WriteLine("Enter email address of the account desired to delete");
                     string targetPK = Console.ReadLine();
                     Account acc = context.accounts.Find(targetPK);
-                    Console.WriteLine("Delete user with information " + acc.ToString + " \n y or n");
-                    string Continue = Console.ReadLine().ToLower();
-                    if (Continue == "y")
+                    if (acc == null)
                     {
-                        Console.WriteLine("Deletion successful.");
-                        context.Remove(acc);
-                        context.SaveChanges();
+                        return false;
                     }
-                    return acc;
+                    Console.WriteLine("Deletion successful.");
+                    context.Remove(acc);
+                    context.SaveChanges();
+                    return true ;
                 }
             }
             catch (Exception ex)
             {
-                return null;
+                return false;
             }
         }
 
         //will return an account object from the DB given a PK from the argument field
-        public Account userReadData(string targetPK)
+        public Account UserReadData(string targetPK)
         {
             try
             {
@@ -149,7 +155,7 @@ namespace Console_Runner
                 return null;
             }
         }
-        public Account userReadData()
+        public Account UserReadData()
         {
             try
             {
@@ -170,7 +176,7 @@ namespace Console_Runner
 
 
         //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
-        public bool userUpdateData(string targetPK, string nEmail, string nFname, string nLname)
+        public bool UserUpdateData(string targetPK, string nEmail, string nFname, string nLname)
         {
             try
             {
@@ -195,7 +201,7 @@ namespace Console_Runner
                 return false;
             }
         }
-        public bool userUpdateData()
+        public bool UserUpdateData()
         {
             try
             {
@@ -226,45 +232,17 @@ namespace Console_Runner
         }
 
         //authenticates a users input password for login. True if pass matches, false otherwise
-        public bool authenticateUserPass(string user,string userPass)
+        public bool AuthenticateUserPass(string user,string userPass)
         {
-            Account acc = userReadData(user);
-
+            Account acc = UserReadData(user);
+            if (acc == null) return false;
             if (acc.Password == userPass)
                 return true;
             else
                 return false;
         }
-
-        //validates that a user account is an admin, True if admin, else false
-        public bool ValidateAdmin(Account acc)
-        {
-            if (acc.accessLevel == 2)
-                return true;
-            else
-                return false;
-        }
-
-        //validates that a user account is an admin, True if admin, else false
-        public bool validateAdmin(string user)
-        {
-            Account acc = userReadData(user);
-            if (acc.accessLevel == 2)
-                return true;
-            else
-                return false;
-        }
-
-        //validates that the user is a valid account, if it is an account return true else false
-        public bool ValidateUser(Account acc)
-        {
-            if (acc.accessLevel > 0)
-                return true;
-            else
-                return false;
-        }
         
-        public bool getAllUsers()
+        public bool GetAllUsers()
         {
             try
             {
@@ -281,8 +259,12 @@ namespace Console_Runner
                 return false;
             }
         }
-        public bool DisableAccount()
-        {
+        public bool DisableAccount(Account currentUser)
+        {   if (!currentUser.isAdmin())
+            {
+                Console.WriteLine("ADMIN ACCESS NEEDED");
+                return false;
+            }
             try
             {
                 Console.WriteLine("Enter email address");
@@ -290,32 +272,45 @@ namespace Console_Runner
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
-                    if (acc.accessLevel % 2 == 0 && acc.accessLevel != 0)
+                    if (acc == null)
                     {
-                        acc.accessLevel -= 1;
-                        context.accounts.Add(acc);
+                        Console.WriteLine("No such account exists");
+                        return false;
                     }
+                    acc.isActive = false;
+                    context.accounts.Update(acc);
+                    Console.WriteLine("successfully disabled account");
+
                 }
-                    return true;
-            }catch (Exception ex)
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
-        public bool EnableAccount()
+        public bool EnableAccount(Account currentUser)
         {
+            if (!currentUser.isAdmin())
+            {
+                Console.WriteLine("ADMIN ACCESS NEEDED");
+                return false;
+            }
             try
             {
-                Console.WriteLine("Enter email address");
+                Console.WriteLine("Enter email address of account to reenable");
                 string targetPK = Console.ReadLine();
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
-                    if (acc.accessLevel % 2 == 1 && acc.accessLevel != 0)
+                    if (acc == null)
                     {
-                        acc.accessLevel += 1;
-                        context.accounts.Add(acc);
+                        Console.WriteLine("No such account exists");
+                        return false;
                     }
+                    acc.isActive = true;
+                    context.accounts.Update(acc);
+                    Console.WriteLine("successfully enabled account");
 
                 }
                 return true;
