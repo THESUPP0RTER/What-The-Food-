@@ -36,8 +36,6 @@ bool loggedIn = false;
 
 while (!loggedIn)
 {
-
-
     Console.Write("Please sign in. \nEmail: ");
     string id = Console.ReadLine();
     Console.Write("\nPassword: ");

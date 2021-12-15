@@ -17,6 +17,7 @@ namespace Console_Runner
         public Archiving()
         {
             _currentMonth = DateTime.Now.ToString("MMMM");
+            this._checkToArchive();
         }
 
         //will start the thread
@@ -70,17 +71,19 @@ namespace Console_Runner
         //code that handles checking if we need to archive the current logs
         private bool _checkToArchive()
         {
+            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")))
+            {
+                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"));
+                ZipFile.CreateFromDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
+            }
+
+            Console.WriteLine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
+
             try
             {
                 if (_newMonth())
                 {
-                    if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")))
-                    {
-                        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"));
-                        ZipFile.CreateFromDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"),
-                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
-                    }
-
                     DateTime currentDate = DateTime.Now;
                     string[] lines = System.IO.File.ReadAllLines(Path.Combine(Environment.CurrentDirectory, "Logs.txt"));
 
