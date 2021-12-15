@@ -11,8 +11,8 @@ using Console_Runner;
 /*
  * TODO
  * bulk operations
- * atleast 1 admin at all times
  * ensure system failures dont bring down system
+ * add new admin account
  */
 
 /*Account admin = new Account();
@@ -32,7 +32,7 @@ while (!loggedIn)
 {
 
 
-    Console.Write("Please sign in. Email: ");
+    Console.Write("Please sign in. \nEmail: ");
     string id = Console.ReadLine();
     Console.Write("\nPassword: ");
     string password = Console.ReadLine();
@@ -88,6 +88,10 @@ while (!loggedIn)
         }
         else
             Console.WriteLine("not valid command");
+
+        /* checks if the current sessions email is null. This is to catch cases where user information was modified mid session 
+         * checks if user permissions have changed.
+         */
         if (currentUser.Email == null)
         {
             Console.WriteLine("email was null");

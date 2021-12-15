@@ -28,6 +28,11 @@ namespace Console_Runner
                         Console.WriteLine("EMAIL ALREADY IN USE Enter a different email");
                         acc.Email = Console.ReadLine();
                     }
+                    if (acc == null)
+                    {
+                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
                     Console.WriteLine("Enter password");
                     acc.Password = Console.ReadLine();
                     Console.WriteLine("Enter fname");
@@ -103,6 +108,11 @@ namespace Console_Runner
                 {
                     string targetPK = email;
                     Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
+                    {
+                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
                     context.Remove(acc);
                     context.SaveChanges();
                 }
@@ -157,6 +167,7 @@ namespace Console_Runner
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
                     return acc;
                 }
             }
@@ -174,6 +185,7 @@ namespace Console_Runner
                     Console.WriteLine("Enter email of user you wish to look up");
                     string targetPK = Console.ReadLine();
                     Account acc = context.accounts.Find(targetPK);
+
                     Console.WriteLine(acc.ToString());
                     return acc;
                 }
@@ -226,6 +238,11 @@ namespace Console_Runner
                     Console.WriteLine("Enter email address");
                     string targetPK = Console.ReadLine();
                     Account acc = context.accounts.Find(targetPK);
+                    if (acc == null)
+                    {
+                        Console.WriteLine("No such account exists");
+                        return false;
+                    }
                     Console.WriteLine("Enter new First name or enter to skip");
                     string nFname = Console.ReadLine();
                     Console.WriteLine("Enter new Last Name or enter to skip");
@@ -307,6 +324,7 @@ namespace Console_Runner
                     }
                     acc.isActive = false;
                     context.accounts.Update(acc);
+                    context.SaveChanges();
                     Console.WriteLine("successfully disabled account");
 
                 }
@@ -338,12 +356,42 @@ namespace Console_Runner
                     }
                     acc.isActive = true;
                     context.accounts.Update(acc);
+                    context.SaveChanges(true);
                     Console.WriteLine("successfully enabled account");
 
                 }
                 return true;
             }
             catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool promoteToAdmin(Account currentUser)
+        {
+            Console.WriteLine("Enter target email");
+            String targetPK = Console.ReadLine();
+            try
+            {
+                if (currentUser.isAdmin() && currentUser.isActive)
+                {
+                    using (var context = new Context())
+                    {
+                        Account acc = context.accounts.Find(targetPK);
+                        if (acc == null)
+                        {
+                            Console.WriteLine("No such account exists");
+                            return false;
+                        }
+                        acc.accessLevel = 2;
+                        context.Update(acc);
+                        context.SaveChanges();
+                    }
+                    return true;
+                }
+                return false;
+                
+            }catch (Exception ex)
             {
                 return false;
             }
