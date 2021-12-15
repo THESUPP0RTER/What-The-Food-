@@ -167,7 +167,6 @@ namespace Console_Runner
                 using (var context = new Context())
                 {
                     Account acc = context.accounts.Find(targetPK);
-                    if (acc == null)
                     return acc;
                 }
             }
