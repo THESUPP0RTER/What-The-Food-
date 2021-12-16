@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 /*
- * CURRENTLY ONLY A TEST FILE
+ * CURRENTLY ONLY A DEMO FILE
  */
 using Microsoft.Extensions.DependencyInjection;
 using User;
@@ -8,12 +8,6 @@ using Class1;
 using Console_Runner;
 
 
-/*
- * TODO
- * bulk operations
- * ensure system failures dont bring down system
- * add new admin account
- */
 UM um = new UM();
 Archiving archiver = new Archiving();
 archiver.archiveStartThread();
