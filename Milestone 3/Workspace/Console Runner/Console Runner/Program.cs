@@ -17,6 +17,12 @@ archiver.archiveStartThread();
 Role_Admin adam = new Role_Admin();
 //Console.WriteLine(adam.ToString());
 
+/////////////////TEST///////////////
+var test = new Account();
+var test2 = new accessLevelDecorator(test);
+Console.WriteLine(test.ToString()+ "\n");
+Console.WriteLine(test2.ToString());
+/// ////////////////////////////////
 if(um.AdminCount() == 0)
 {
     Account admin = new Account();

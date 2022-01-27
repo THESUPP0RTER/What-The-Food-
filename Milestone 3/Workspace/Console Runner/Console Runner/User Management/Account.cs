@@ -11,11 +11,13 @@ namespace User
      * Account class that will represent the contents of a user's account
      */
     //interface class
-    interface baseAccount
+    public interface basicAccount
     {
         public string ToString();
     }
-    class Account: baseAccount
+
+    //concrete class
+    public class Account: basicAccount
     {
         //Email getter and setter
         [System.ComponentModel.DataAnnotations.Key] //set email as the PK
@@ -38,17 +40,9 @@ namespace User
         public bool isActive { get; set; }
 
         public string Password { get; set; }
-        public string ToString()
-        {
-            int pass = this.Password.Length;
-            string stars = "";
-            for (int i = 0; i < pass; i++)
-            {
-                stars += "*";
-            }
-            return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
-        }
 
+
+        //TODO: I dont think we need these
         public bool isAdmin()
         {
             return this.accessLevel >= 2;
@@ -57,79 +51,84 @@ namespace User
         public bool isUser()
         {
             return this.accessLevel >= 1;
+        }    
+ 
+        public string ToString()
+        {
+            return "This is considered a base Account ";
         }
-    }
 
-    class AccountDecorator : baseAccount
+    }
+    //abstract decorator
+    public class accountDecorator : basicAccount //allows for users to have extra permission
     {
 
-        private baseAccount baseUser;
-        public AccountDecorator(baseAccount user)
+        private basicAccount user;
+        public accountDecorator(basicAccount user)
         {
-            baseUser = user;
+            this.user = user;
         }
         public virtual string ToString()
         {
-            return baseUser.ToString();
+            return this.user.ToString() + "and has a decorator ";
         }
     }
 
-    class accessLevelDecorator : AccountDecorator
+    //TODO: what exactly does each decorator do? 
+
+    //concrete decorators
+    public class accessLevelDecorator : accountDecorator
     {
-        public accessLevelDecorator(baseAccount user) : base(user) { }
+        public accessLevelDecorator(basicAccount user) : base(user) { }
 
         public override string ToString()
         {
-            string type = base.ToString()+ "ran in access deco";
-            return type;
+            return base.ToString()+"including accessLevel";
         }
     }
-    //public class Account
+
+    //public class AMRDecorator: basicAccount
     //{
-    //    //Email getter and setter
-    //    [System.ComponentModel.DataAnnotations.Key] //set email as the PK
-    //    public string Email { get; set; }
-    //    //First name setter and getter
-    //    public string Fname { get; set; }
-    //    //Last name setter and getter
-    //    public string Lname { get; set; }
-    //    /*accessLevel getter and setter
-    //     * 0 No account
-    //     * 1 user account
-    //     * 2 Admin account
-    //     */
-    //    public int accessLevel { get; set; }
-    //    //Password getter and setter
-    //    //[System.ComponentModel.DataAnnotations.Required]
-
-    //    public Role_User role { get; set; }
-
-    //    public bool isActive { get; set; }
-
-    //    public string Password { get; set; }
-
-    //    public string ToString()
+    //    private basicAccount user;
+    //    public AMRDecorator(basicAccount user)
     //    {
-    //        int pass = this.Password.Length;
-    //        string stars = "";
-    //        for(int i = 0; i < pass; i++)
-    //        {
-    //            stars += "*";
-    //        }
-    //        return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
+    //        this.user = user;
     //    }
 
-    //    public bool isAdmin()
+    //    public override string ToString()
     //    {
-    //        return this.accessLevel >= 2;
-
+    //        return "decorated with AMR \n";
     //    }
-    //    public bool isUser()
+    //}
+    //public class flagDecorator: basicAccount
+    //{
+    //    private basicAccount user;
+    //    public flagDecorator(basicAccount user)
     //    {
-    //        return this.accessLevel >= 1;
+    //        this.user = user;
     //    }
 
-    //} 
+    //    public override string ToString()
+    //    {
+    //        return "decorated with food flag \n";
+    //    }
+    //}
+    //public class accountInfoDecorator : basicAccount
+    //{
+    //    private basicAccount user;
+    //    public accountInfoDecorator(basicAccount user)
+    //    {
+    //        this.user = user;
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return "decorated with accountInfo \n";
+    //    }
+    //}
+  
+    
+
 
 }
 
