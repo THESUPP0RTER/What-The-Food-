@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220126223449_CreateCustomerDB")]
+    [Migration("20220126230306_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Console_Runner.Authorization+Role_User", b =>
